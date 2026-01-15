@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto Spot Digital | Official Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    
+    <style>
+        .category-btn.active { background-color: #facc15; color: black; border-color: #facc15; }
+        .brand-gradient { background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); }
+        .nav-glass { background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); }
+        .book-now-btn { background-color: #d1206b; color: white; transition: all 0.3s ease; }
+        .book-now-btn:hover { background-color: #b01a5a; transform: scale(1.05); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Gallery Grid Animation */
+        .gallery-img { transition: transform 0.3s ease; cursor: pointer; }
+        .gallery-img:hover { transform: scale(1.02); }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-900">
+
+    <nav class="nav-glass p-4 sticky top-0 z-50 border-b border-yellow-500/20">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="flex items-center gap-4 group">
+                <img src="LOGO.jpg" alt="Logo" class="h-14 w-auto transform group-hover:scale-110 transition">
+                <div class="leading-none text-white">
+                    <span class="text-xl font-black uppercase">Foto Spot</span>
+                    <p class="text-[10px] text-yellow-500 tracking-[0.3em] font-bold">DIGITAL</p>
+                </div>
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <button onclick="toggleBooking()" class="book-now-btn px-6 py-2 rounded-lg font-bold flex items-center gap-2 text-sm shadow-lg">
+                    <i class="fas fa-paper-plane"></i> BOOK NOW
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="brand-gradient text-white py-32 px-4 text-center border-b-4 border-yellow-500">
+        <div class="container mx-auto">
+            <h2 class="text-6xl md:text-7xl font-thin mb-4 uppercase tracking-wide">
+                Capturing <span class="text-yellow-500 font-normal">Best Moments</span>
+            </h2>
+            <p class="text-gray-400 text-xl max-w-2xl mx-auto mb-12 font-light">Premier Wedding & Event Photography Studio</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/5 backdrop-blur-xl p-6 rounded-3xl border border-white/10 max-w-5xl mx-auto">
+                <a href="tel:9321487991" class="flex flex-col items-center gap-2 hover:text-yellow-500 transition"><i class="fas fa-phone-volume text-yellow-500 text-2xl"></i><span class="text-sm font-bold tracking-widest">9321487991</span></a>
+                <a href="mailto:fotospotaj@gmail.com" class="flex flex-col items-center gap-2 hover:text-yellow-500 transition"><i class="fas fa-envelope text-yellow-500 text-2xl"></i><span class="text-sm font-bold">fotospotaj@gmail.com</span></a>
+                <a href="https://instagram.com/fotospot01" target="_blank" class="flex flex-col items-center gap-2 hover:text-pink-500 transition"><i class="fab fa-instagram text-pink-500 text-2xl"></i><span class="text-sm font-bold">@fotospot01</span></a>
+                <a href="https://www.youtube.com/@fotospot1842" target="_blank" class="flex flex-col items-center gap-2 hover:text-red-600 transition"><i class="fab fa-youtube text-red-600 text-2xl"></i><span class="text-sm font-bold">YouTube</span></a>
+            </div>
+        </div>
+    </header>
+
+    <section id="gallery" class="container mx-auto py-20 px-4 text-center">
+        <h3 class="text-4xl font-thin mb-10 uppercase tracking-widest text-gray-800">Event Gallery</h3>
+        
+        <div class="flex justify-center gap-4 flex-wrap mb-12">
+            <button onclick="filterGallery('all')" class="category-btn active px-8 py-3 border-2 rounded-xl font-bold transition uppercase tracking-wider">All</button>
+            <button onclick="filterGallery('wedding')" class="category-btn px-8 py-3 border-2 rounded-xl font-bold transition uppercase tracking-wider">Wedding</button>
+            <button onclick="filterGallery('pre-wedding')" class="category-btn px-8 py-3 border-2 rounded-xl font-bold transition uppercase tracking-wider">Pre-Wedding</button>
+            <button onclick="filterGallery('events')" class="category-btn px-8 py-3 border-2 rounded-xl font-bold transition uppercase tracking-wider">Events</button>
+        </div>
+
+        <div id="galleryGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          
+        </div>
+        <p class="text-gray-400 mt-8 text-sm italic">New uploads appear here automatically.</p>
+    </section>
+
+    <section id="adminSection" class="bg-gray-900 py-24 px-4 text-white hidden">
+        <div class="container mx-auto max-w-5xl bg-black rounded-[3rem] p-10 border border-white/5 shadow-3xl flex flex-col md:flex-row gap-12">
+            <div class="md:w-1/3 border-r border-white/10 pr-6">
+                <img src="LOGO.jpg" alt="Logo" class="w-24 mb-6">
+                <h3 class="text-3xl font-thin text-yellow-500 uppercase">Admin Hub</h3>
+                <p class="text-gray-500 text-sm mt-4">Upload high-res images directly to the website gallery.</p>
+            </div>
+            <div class="md:w-2/3 flex flex-col justify-center">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block mb-2 font-bold text-gray-400">Select Event Tag:</label>
+                        <select id="uploadTag" class="w-full bg-white/5 p-4 rounded-xl border border-white/10 outline-none text-white">
+                            <option value="wedding">Wedding Sector</option>
+                            <option value="pre-wedding">Pre-Wedding Sector</option>
+                            <option value="events">Events Sector</option>
+                        </select>
+                    </div>
+                    
+                    <button id="upload_widget" class="w-full bg-yellow-500 text-black py-6 rounded-2xl font-black uppercase shadow-lg hover:bg-yellow-400 transition flex items-center justify-center gap-3">
+                        <i class="fas fa-cloud-upload-alt text-2xl"></i> Upload Photos Now
+                    </button>
+                    <div id="uploadStatus" class="text-center text-green-500 font-bold hidden">Upload Successful!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-thin uppercase mb-12 tracking-widest">Client Reviews</h3>
+            
+            <div class="relative max-w-6xl mx-auto">
+                <button onclick="slideReviews(-1)" class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 text-white w-12 h-12 rounded-full hidden md:flex items-center justify-center hover:bg-yellow-500 hover:text-black transition"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="slideReviews(1)" class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 text-white w-12 h-12 rounded-full hidden md:flex items-center justify-center hover:bg-yellow-500 hover:text-black transition"><i class="fas fa-chevron-right"></i></button>
+
+                <div id="reviewSlider" class="flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-4 px-4">
+                    <div class="min-w-[300px] md:min-w-[400px] snap-center bg-gray-50 p-8 rounded-3xl shadow-lg border border-gray-100 flex flex-col justify-between">
+                        <div><div class="text-yellow-500 text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 italic mb-6">"Atesh and team are amazing! I was the bridesmaid at the recent wedding that they were capturing and i got to be a part of the entire pre wedding and wedding shoot and oh my godd, the way they work is amazing. The dedication to do more and get the bride and groom to contribute is outstanding. Loved my pictures from the wedding. Atesh did a good job with my sisters wedding..."</p></div><p class="font-bold text-sm uppercase text-gray-800 text-right">- HARSHITA AGARWAL</p>
+                    </div>
+                    <div class="min-w-[300px] md:min-w-[400px] snap-center bg-gray-50 p-8 rounded-3xl shadow-lg border border-gray-100 flex flex-col justify-between">
+                        <div><div class="text-yellow-500 text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 italic mb-6">"If you're looking for someone to capture your special moments ekdum beautifully and without any tension, look no further than Atesh and his amazing team at Foto Spot Studio! 🤩 From our dreamy pre-wedding shoot to the wedding ka saara hungama and all the functions, they were just mind-blowing! 💯 Seriously, working with them was like hanging out with friends – so chill and they made us feel very comfortable in front of the camera. 😄 And the photos? Arre yaar! They came out absolutely stunning! ✨ Every single picture felt so natural and full of emotions ka sagar. 🥰."</p></div><p class="font-bold text-sm uppercase text-gray-800 text-right">- RAJAT GUPTA</p>
+                    </div>
+                    <div class="min-w-[300px] md:min-w-[400px] snap-center bg-gray-50 p-8 rounded-3xl shadow-lg border border-gray-100 flex flex-col justify-between">
+                        <div><div class="text-yellow-500 text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 italic mb-6">"I had a wonderful experience with Atish Dada and his team. The quality of photos and video of my marriage was superb .. I would prefer everyone to awail the services without any doubt and you would love the outcome at the end....would like really appreciate and thank Atish Dada and his team the effort they put in to get the desired output as per their customer expectations. Thank you...🙏 10/10 marks"</p></div><p class="font-bold text-sm uppercase text-gray-800 text-right">- SUNIL VYAS</p>
+                    </div>
+                    <div class="min-w-[300px] md:min-w-[400px] snap-center bg-gray-50 p-8 rounded-3xl shadow-lg border border-gray-100 flex flex-col justify-between">
+                        <div><div class="text-yellow-500 text-xl mb-4"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div><p class="text-gray-600 italic mb-6">"We hired an amazing team to capture the memories of our wedding, and we couldn't be more thrilled with the results! From start to finish, they were professional, attentive, and truly understood our vision. The photos and videos are absolutely stunning, perfectly capturing the joy, emotion, and special moments of our day. We were so impressed by how seamlessly they worked with our guests and how they managed to capture so many beautiful moments without us even noticing they were there. The final product exceeded our expectations in every way. Highly recommend this talented team to anyone looking to preserve their special memories! #fotospotstudio "</p></div><p class="font-bold text-sm uppercase text-gray-800 text-right">- NANDINI ARYA</p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="bookingSidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-[60] transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-8 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-8"><h3 class="text-2xl font-thin text-gray-800 uppercase italic">Book Your Date</h3><button onclick="toggleBooking()" class="text-3xl text-gray-400 hover:text-red-500">×</button></div>
+            
+            <form action="https://formsubmit.co/fotospotaj@gmail.com" method="POST" class="space-y-4">
+                <input type="hidden" name="_next" value="">
+                <input type="hidden" name="_subject" value="New Foto Spot Booking!">
+                
+                <input type="text" name="name" id="b_name" placeholder="Full Name" required class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#d1206b]">
+                <input type="email" name="email" id="b_email" placeholder="Email ID" required class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#d1206b]">
+                <input type="tel" name="phone" id="b_phone" placeholder="Mobile Number" required class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#d1206b]">
+                <textarea name="details" id="b_details" placeholder="Event Details (Date, Venue, etc.)" rows="4" class="w-full p-4 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-[#d1206b]"></textarea>
+                
+                <div class="flex flex-col gap-3">
+                    <button type="submit" class="w-full bg-[#d1206b] text-white font-black py-4 rounded-xl shadow-lg hover:bg-[#b01a5a] transition uppercase flex items-center justify-center gap-2">
+                        <i class="fas fa-envelope text-xl"></i> Send via Email
+                    </button>
+                    <button type="button" onclick="sendToWhatsApp()" class="w-full bg-green-500 text-white font-black py-4 rounded-xl shadow-lg hover:bg-green-600 transition uppercase flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i> Send via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="bg-black text-white pt-20 pb-12 border-t border-yellow-500/20">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <div><h4 class="text-2xl font-thin mb-6 uppercase tracking-widest">Visit Studio</h4><p class="text-gray-400 text-sm mb-4 leading-relaxed uppercase tracking-wide">Shop no 19 Shree Balaji Darshan, <br>New Golden Nest Rd, near Canara Bank, <br>Bhayander (E), 401105</p><p class="text-yellow-500 font-bold tracking-widest text-lg">9321487991</p></div>
+           <iframe src="https://maps.google.com/maps?q=Foto+Spot+Studio+Shop+no+19+Shree+Balaji+Darshan+Bhayander+East&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <div class="text-center"><img src="LOGO.jpg" alt="Logo" class="h-16 mx-auto mb-6"><p onclick="triggerAdmin()" class="text-gray-500 font-bold uppercase text-[10px] tracking-[0.4em] cursor-pointer hover:text-yellow-500 transition" title="Admin Login">© <span id="year"></span> FOTO SPOT DIGITAL</p></div>
+    </footer>
+
+    <script>
+        // 1. Set Current Year
+        document.getElementById("year").innerText = new Date().getFullYear();
+        
+        // 2. Sidebar Toggle
+        function toggleBooking() { document.getElementById('bookingSidebar').classList.toggle('translate-x-full'); }
+
+        // 3. Admin Unlock (Password: 2026)
+        function triggerAdmin() {
+            let pin = prompt("Enter Admin PIN:");
+            if (pin === "2026") {
+                document.getElementById('adminSection').classList.remove('hidden');
+                document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth' });
+            } else if (pin !== null) { alert("Wrong PIN"); }
+        }
+
+        // 4. UPLOAD LOGIC (USING YOUR KEYS)
+        const cloudName = "dmps3ti7o"; 
+        const uploadPreset = "uplode_preset"; 
+
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: cloudName, 
+            uploadPreset: uploadPreset,
+            sources: ['local', 'url', 'camera'],
+            tags: ['website_upload'] 
+        }, (error, result) => { 
+            if (!error && result && result.event === "success") { 
+                var selectedCategory = document.getElementById('uploadTag').value;
+                document.getElementById('uploadStatus').classList.remove('hidden');
+                addImageToGallery(result.info.secure_url, "New Upload", selectedCategory);
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", function(){
+            myWidget.open();
+        }, false);
+
+        // 5. GALLERY LOGIC
+        function addImageToGallery(url, title, category) {
+            const grid = document.getElementById('galleryGrid');
+            const div = document.createElement('div');
+            div.className = `relative h-64 rounded-2xl overflow-hidden shadow-lg group gallery-item ${category}`;
+            div.innerHTML = `<img src="${url}" class="w-full h-full object-cover gallery-img"><div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white font-bold uppercase">${title}</div>`;
+            grid.prepend(div);
+            
+            // Re-check filter
+            const currentFilter = document.querySelector('.category-btn.active').innerText.toLowerCase();
+            if(currentFilter !== 'all' && currentFilter !== category) { div.style.display = 'none'; }
+        }
+
+        function filterGallery(category) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    if (item.classList.contains(category)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        // 6. WHATSAPP LOGIC
+        function sendToWhatsApp() {
+            var name = document.getElementById('b_name').value;
+            var email = document.getElementById('b_email').value;
+            var phone = document.getElementById('b_phone').value;
+            var details = document.getElementById('b_details').value;
+
+            if(!name || !phone) { alert("Please enter Name and Phone."); return; }
+            var msg = `*New Inquiry from Website* %0A%0A*Name:* ${name} %0A*Phone:* ${phone} %0A*Email:* ${email} %0A*Details:* ${details}`;
+            window.open(`https://wa.me/919321487991?text=${msg}`, '_blank');
+        }
+
+        // 7. Reviews Slider
+        function slideReviews(d) { document.getElementById('reviewSlider').scrollBy({ left: d * 400, behavior: 'smooth' }); }
+    </script>
+</body>
+</html>
